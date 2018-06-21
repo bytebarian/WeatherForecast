@@ -1,9 +1,10 @@
-﻿using WeatherForecast.Services.Models;
+﻿using System.Threading.Tasks;
+using WeatherForecast.Services.Models;
 
 namespace WeatherForecast.Services.Interfaces
 {
     public interface IWeatherService
     {
-        WeatherForecastResponse GetWeatherForecast(WeatherForecastRequest request);
+        Task<WeatherForecastResponse> GetWeatherForecastAsync(WeatherForecastRequest request);
     }
 }
