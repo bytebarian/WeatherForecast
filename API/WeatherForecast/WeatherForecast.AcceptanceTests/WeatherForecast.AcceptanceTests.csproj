@@ -6,11 +6,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{644E1EC1-2A22-498E-9B7D-BDBE43D90242}</ProjectGuid>
+    <ProjectGuid>{0CBBB993-A304-470D-986B-D6CB0405C47C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WeatherForecast.UnitTests</RootNamespace>
-    <AssemblyName>WeatherForecast.UnitTests</AssemblyName>
+    <RootNamespace>WeatherForecast.AcceptanceTests</RootNamespace>
+    <AssemblyName>WeatherForecast.AcceptanceTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -56,11 +56,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelMapperTests.cs" />
+    <Compile Include="AcceptanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -68,12 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WeatherForecast.Services\WeatherForecast.Services.csproj">
-      <Project>{a7e518f0-3415-4356-8275-732bed1b7e40}</Project>
+      <Project>{A7E518F0-3415-4356-8275-732BED1B7E40}</Project>
       <Name>WeatherForecast.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WeatherForecast\WeatherForecast.csproj">
-      <Project>{3d5dd614-c2a2-4f6c-9d67-c21aeae29e39}</Project>
-      <Name>WeatherForecast</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

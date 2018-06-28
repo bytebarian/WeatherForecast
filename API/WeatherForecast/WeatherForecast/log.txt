@@ -1,0 +1,2 @@
+2018-06-28 16:27:57.2528|ERROR|WeatherForecast.Services.Services.OpenWeatherMapService|System.Exception: test
+   at WeatherForecast.Services.Services.OpenWeatherMapService.<GetWeatherForecastAsync>d__1.MoveNext() in C:\Projects\Github\WeatherForecast\WeatherForecast\API\WeatherForecast\WeatherForecast.Services\Services\OpenWeatherMapService.cs:line 49

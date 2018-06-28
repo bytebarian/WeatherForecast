@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WeatherForecast.Services.Models
+﻿namespace WeatherForecast.Services.Models
 {
     public class WeatherForecastRequest
     {

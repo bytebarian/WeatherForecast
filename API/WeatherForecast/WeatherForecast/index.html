@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script>
+var app = angular.module("weatherForecast", []); 
+app.controller("myCtrl", function($scope, $http) {
+    $scope.city = "";
+    $scope.country = "";
+    $scope.weatherForecast = {};
+    $scope.getWeather = function () {
+        var promise = $http.get("/WeatherForecast/api/weather/" + $scope.city + "/" + $scope.country)
+            .then(function(response){
+                $scope.weatherForecast = response.data;
+            });
+    }    
+});
+</script>
+
+<div ng-app="weatherForecast" ng-controller="myCtrl">
+  <div>
+      <p>City</p>
+      <input ng-model="city">
+  </div>
+    <div>
+        <p>Country</p>
+      <input ng-model="country">
+  </div>
+  <div>
+      <br/>
+      <button ng-click="getWeather()">Check</button>
+  </div>
+    <div>
+        <p><b>City: </b> {{weatherForecast.Location.City}}</p>
+        <p><b>Country: </b> {{weatherForecast.Location.Country}}</p>
+        <p><b>Temperature value: </b> {{weatherForecast.Tempreature.Value}}</p>
+        <p><b>Temperature format: </b> {{weatherForecast.Tempreature.Format}}</p>
+        <p><b>Humidity: </b> {{weatherForecast.Humidity}}</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,26 +1,5 @@
-﻿/*
- * The MIT License (MIT)
-
-Copyright (c) 2014 Joan Caron
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
+﻿using System;
+using NLog;
 using OpenWeatherMap;
 using WeatherForecast.Services.Interfaces;
 using WeatherForecast.Services.Models;
@@ -29,14 +8,56 @@ namespace WeatherForecast.Services.Services
 {
     public class OpenWeatherMapService : IWeatherService
     {
-        public async System.Threading.Tasks.Task<WeatherForecastResponse> GetWeatherForecastAsync(WeatherForecastRequest request)
+        public OpenWeatherMapService()
         {
-            var client = new OpenWeatherMapClient(request.Configuration.ApiKey);
-            var currentWeather = await client.CurrentWeather.GetByName(request.Location.City, MetricSystem.Metric);
-            return ConvertToServiceModel(currentWeather, request);
+            var config = new NLog.Config.LoggingConfiguration();
+
+            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "log.txt" };
+            var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
+
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
+
+            LogManager.Configuration = config;
         }
 
-        public WeatherForecastResponse ConvertToServiceModel(CurrentWeatherResponse currentWeather, WeatherForecastRequest request)
+        public async System.Threading.Tasks.Task<WeatherForecastResponse> GetWeatherForecastAsync(WeatherForecastRequest request)
+        {
+            if(request == null)
+            {
+                throw new ArgumentNullException("request object is null");
+            }
+            if(request.Configuration == null)
+            {
+                throw new ArgumentNullException("configuration object is null");
+            }
+            if (string.IsNullOrEmpty(request.Configuration.ApiKey))
+            {
+                throw new ArgumentException("Api key is missing");
+            }
+            if(request.Location == null)
+            {
+                throw new ArgumentNullException("Location object is null");
+            }
+            if (string.IsNullOrEmpty(request.Location.City))
+            {
+                throw new ArgumentException("Location city is missing");
+            }
+            var client = new OpenWeatherMapClient(request.Configuration.ApiKey);
+            try
+            {
+                var currentWeather = await client.CurrentWeather.GetByName(request.Location.City, MetricSystem.Metric);
+                return ConvertToServiceModel(currentWeather, request);
+            }
+            catch(Exception ex)
+            {
+                var logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex);
+                return WeatherForecastResponse.Null;
+            }           
+        }
+
+        private WeatherForecastResponse ConvertToServiceModel(CurrentWeatherResponse currentWeather, WeatherForecastRequest request)
         {
             return new WeatherForecastResponse
             {
